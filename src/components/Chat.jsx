@@ -38,17 +38,26 @@ const Chat = () => {
     setFile(e.target.files[0]);
   };
 
+  // Función para limpiar el historial del chat
+  const clearChatHistory = () => {
+    setChat([]); // Limpiar el historial de chat
+  };
+
   return (
     <div className="chat-container">
       <h2>Chat en Vivo</h2>
       <div className="chat-box">
-        {chat.map((item, index) => (
-          <p key={index}>
-            {item.type === "message"
-              ? `Mensaje: ${item.content}`
-              : `Archivo enviado: ${item.content}`}
-          </p>
-        ))}
+        {chat.length === 0 ? (
+          <p>No hay mensajes.</p>
+        ) : (
+          chat.map((item, index) => (
+            <p key={index}>
+              {item.type === "message"
+                ? `Mensaje: ${item.content}`
+                : `Archivo enviado: ${item.content}`}
+            </p>
+          ))
+        )}
       </div>
       <form onSubmit={sendMessage}>
         <input
@@ -63,6 +72,9 @@ const Chat = () => {
         <input type="file" onChange={handleFileChange} />
         <button type="submit">Enviar Archivo</button>
       </form>
+      <button onClick={clearChatHistory} className="clear-button">
+        Limpiar Historial
+      </button>
     </div>
   );
 };
