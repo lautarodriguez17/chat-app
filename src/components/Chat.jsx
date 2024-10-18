@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 // Simulación de backend ficticio
 const sendToBackend = (message, file) => {
@@ -20,9 +20,11 @@ const Chat = () => {
 
   const sendMessage = async (e) => {
     e.preventDefault();
-    await sendToBackend(message, null);
-    setChat([...chat, { type: "message", content: message }]);
-    setMessage("");
+    if (message.trim() !== "") {
+      await sendToBackend(message, null);
+      setChat([...chat, { type: "message", content: message }]);
+      setMessage("");
+    }
   };
 
   const sendFile = async (e) => {
@@ -66,13 +68,18 @@ const Chat = () => {
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Escribe un mensaje..."
         />
-        <button type="submit">Enviar</button>
+        <button type="submit" disabled={message.trim() === ""}>
+          Enviar
+        </button>
       </form>
       <form onSubmit={sendFile}>
         <input type="file" onChange={handleFileChange} />
         <button type="submit">Enviar Archivo</button>
       </form>
-      <button onClick={clearChatHistory} className="clear-button">
+      <button
+        onClick={clearChatHistory}
+        className="clear-button"
+      >
         Limpiar Historial
       </button>
     </div>
